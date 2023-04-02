@@ -180,7 +180,6 @@ class DoublyLinkedList:
             current_node = current_node.next
 
 
-# Create an empty doubly linked list
 doubly_linked_list = DoublyLinkedList()
 
 # Append some data to the list
@@ -199,5 +198,112 @@ doubly_linked_list.insert_after_node(node, 1.5)
 node_to_delete = doubly_linked_list.head.next.next
 doubly_linked_list.delete_node(node_to_delete)
 
-# Print the entire list
 doubly_linked_list.print_list()
+
+
+
+
+#===================================Lets implement a Circular linked list====================================================>
+
+
+""" 
+Circular linked list is a variation of a linked list in which the last node points to the first node instead of None. 
+This creates a circular structure, and allows for efficient traversal in a loop.
+
+"""
+
+
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+class CircularLinkedList:
+    def __init__(self):
+        self.head = None
+
+    def append(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            new_node.next = self.head
+            return
+        current_node = self.head
+        while current_node.next != self.head:
+            current_node = current_node.next
+        current_node.next = new_node
+        new_node.next = self.head
+
+    def prepend(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            new_node.next = self.head
+            return
+        current_node = self.head
+        while current_node.next != self.head:
+            current_node = current_node.next
+        new_node.next = self.head
+        self.head = new_node
+        current_node.next = self.head
+
+    def insert_after_node(self, node, data):
+        if not node:
+            print("Node not found")
+            return
+        new_node = Node(data)
+        new_node.next = node.next
+        node.next = new_node
+
+    def delete_node(self, key):
+        if not self.head:
+            return
+        if self.head.data == key:
+            current_node = self.head
+            while current_node.next != self.head:
+                current_node = current_node.next
+            if self.head == self.head.next:
+                self.head = None
+            else:
+                self.head = self.head.next
+                current_node.next = self.head
+            return
+        current_node = self.head
+        prev_node = None
+        while current_node.next != self.head:
+            prev_node = current_node
+            current_node = current_node.next
+            if current_node.data == key:
+                prev_node.next = current_node.next
+                return
+
+    def print_list(self):
+        if not self.head:
+            print("List is empty")
+            return
+        current_node = self.head
+        while current_node.next != self.head:
+            print(current_node.data)
+            current_node = current_node.next
+        print(current_node.data) # Print the last node
+
+
+
+circular_linked_list = CircularLinkedList()
+
+# Append some data to the list
+circular_linked_list.append(1)
+circular_linked_list.append(2)
+circular_linked_list.append(3)
+
+# Prepend some data to the list
+circular_linked_list.prepend(0)
+
+# Insert a node after a given node
+node = circular_linked_list.head.next
+circular_linked_list.insert_after_node(node, 1.5)
+
+# Delete a node from the list
+circular_linked_list.delete_node(1)
+
+circular_linked_list.print_list()
